@@ -1,17 +1,10 @@
-var numberOfPoints = 20;
+var numberOfPoints = 50;
 var points = [];
 var ga;
 
-function setup() {
-	var canvas = createCanvas(640, 480);
-	canvas.parent("canvas-holder");
-	points.length = 0;
-	for (var i = 0; i < numberOfPoints; i++) {
-		points.push(createVector(floor(random(0, 640)), floor(random(0, 480))));
-	}
-
+function initiateGA(){
 	ga = new GeneticAlgorithm();
-	var populationCount = 1000;
+	var populationCount = 50;
 	var population = [];
 	var dummyPath = [];
 	for (var i = 0; i < numberOfPoints; i++) {
@@ -48,7 +41,19 @@ function setup() {
 		newPath[randomIndex2] = tmp;
 		return newPath;
 	});
-	ga.setMutationRate(0.01);
+	ga.setInitialMutationRate(0.9);
+	ga.setMutationDecayRate(0.0001);
+}
+
+function setup() {
+	var canvas = createCanvas(640, 480);
+	canvas.parent("canvas-holder");
+	points.length = 0;
+	for (var i = 0; i < numberOfPoints; i++) {
+		points.push(createVector(floor(random(0, 640)), floor(random(0, 480))));
+	}
+
+	initiateGA();
 }
 
 
@@ -67,5 +72,5 @@ function draw() {
 	}
 	noStroke();
 	fill(200);
-	text(`Generation :  + ${ga.getGenerationCount()}\nMean fitness : " + ${ga.getAverageFitness()}`, width / 2, height - 30);
+	text(`Generation :  + ${ga.getGenerationCount()}\nMean fitness : + ${ga.getAverageFitness()}\nNet mutation rate : ${ga.getCurrentMutationRate()}`, width / 2, height - 30);
 }

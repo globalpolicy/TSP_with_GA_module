@@ -7,7 +7,9 @@ function GeneticAlgorithm() {
     var _fitnessFunction;
     var _crossOverFunction;
     var _mutateFunction;
-    var _mutationRate;
+    var _initialMutationRate;
+    var _mutationDecayRate = 0;
+    var _currentMutationRate = 0;
     var _generationCount = 0;
     var _averageFitness = 0;
 
@@ -29,11 +31,19 @@ function GeneticAlgorithm() {
         _mutateFunction = mutateFunction;
     }
 
-    this.setMutationRate = (mutationRate) => {
-        _mutationRate = mutationRate;
+    this.setInitialMutationRate = (initialMutationRate) => {
+        _initialMutationRate = initialMutationRate;
     }
 
-    this.getMutationRate = () => _mutationRate;
+    this.setMutationDecayRate = (mutationDecayRate) => {
+        _mutationDecayRate = mutationDecayRate;
+    }
+
+    this.getMutationDecayRate = () => _mutationDecayRate;
+
+    this.getInitialMutationRate = () => _initialMutationRate;
+
+    this.getCurrentMutationRate = () => _currentMutationRate;
 
     this.getGenerationCount = () => _generationCount;
 
@@ -95,8 +105,10 @@ function GeneticAlgorithm() {
 
     var _mutate = (member) => {
         var mutant = member;
-        if (Math.random() < _mutationRate)
+        _currentMutationRate = _initialMutationRate * Math.pow(10, -_mutationDecayRate * _generationCount);
+        if (Math.random() < _currentMutationRate) {
             mutant = _mutateFunction(member);
+        }
         return mutant;
     }
 

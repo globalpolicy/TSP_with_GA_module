@@ -35,10 +35,6 @@ function GeneticAlgorithm() {
 
     this.getMutationRate = () => _mutationRate;
 
-    this.setGenerationEndedCallback = (generationEndedCallback) => {
-        _generationEndedCallback = generationEndedCallback;
-    }
-
     this.getGenerationCount = () => _generationCount;
 
     this.getAverageFitness = () => _averageFitness;
